@@ -1,0 +1,7 @@
+/** 
+* ≈–∂œ «∑Ònull 
+* @param data 
+*/ 
+function isNull(data){ 
+return (data == "" || data == undefined || data == null) ? "‘›Œﬁ" : data; 
+}
