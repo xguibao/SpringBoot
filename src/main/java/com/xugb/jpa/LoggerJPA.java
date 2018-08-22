@@ -1,6 +1,6 @@
 package com.xugb.jpa;
 
-import com.xugb.Entity.LoggerEntity;
+import com.xugb.entity.LoggerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

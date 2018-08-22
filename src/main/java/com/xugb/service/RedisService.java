@@ -2,7 +2,7 @@ package com.xugb.service;
 
 
 
-import com.xugb.Entity.RedisEntity;
+import com.xugb.entity.RedisEntity;
 import com.xugb.jpa.RedisJPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;

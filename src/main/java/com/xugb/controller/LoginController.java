@@ -1,62 +1,72 @@
 package com.xugb.controller;
 
-import com.xugb.Entity.UserEntity;
-import com.xugb.jpa.UserJPA;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.xugb.utils.RestResponse;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * ========================
- * Created with IntelliJ IDEA.
- * User：恒宇少年
- * Date：2017/4/7
- * Time：21:17
- * 码云：http://git.oschina.net/jnyqy
- * ========================
- */
-@RestController
-@RequestMapping(value = "/login")
+@Controller
 public class LoginController {
 
-    @Autowired
-    private UserJPA userJPA;
 
     @RequestMapping(value = "/login")
-    public String login(UserEntity user, HttpServletRequest request)
+    public String layuiLogin(HttpServletRequest request)
     {
-        //登录成功
-        boolean flag = true;
-        String result = "登录成功";
-        //根据用户名查询用户是否存在
-        /*UserEntity userEntity = userJPA.findOne(new Specification<UserEntity>() {
-            @Override
-            public Predicate toPredicate(Root<UserEntity> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-                criteriaQuery.where(criteriaBuilder.equal(root.get("name"), user.getName()));
-                return null;
-            }
-        });
-        //用户不存在
-        if(userEntity == null){
-            flag = false;
-            result = "用户不存在，登录失败";}
-        //密码错误
-        else if(!userEntity.getPwd().equals(user.getPwd())){
-            flag = false;
-            result = "用户密码不相符，登录失败";
-        }
-        //登录成功
-        if(flag){
-            //将用户写入session
-            request.getSession().setAttribute("_session_user",userEntity);
-        }*/
-        return result;
+        return "/login/login";
+
     }
+
+    @ResponseBody
+    @PostMapping("login/main")
+    public RestResponse loginMain(HttpServletRequest request)
+    {
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
+        Map<String, Object> map = new HashMap<>();
+        map.put("url","index");
+        if(StringUtils.isBlank(userName) || StringUtils.isBlank(password)){
+            return RestResponse.failure("用户名或者密码不能为空");
+        }
+        else{
+            return RestResponse.success("登录成功").setData(map);
+
+        }
+
+    }
+    /**
+     *  空地址请求
+     * @return
+     */
+    @GetMapping(value = "")
+    public String noAddress() {
+
+        return "redirect:login";
+    }
+
+    @GetMapping(value = "/index")
+    public String index() {
+
+        return "index";
+    }
+
+
+    @GetMapping(value = "/main")
+    public String main() {
+
+        return "main";
+    }
+
+    @GetMapping(value = "page/news/newsList")
+    public String news() {
+
+        return "news/newsList";
+    }
+
+
+
+
 }

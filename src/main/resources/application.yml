@@ -1,25 +1,26 @@
 spring:
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
+  thymeleaf:
+    cache: false
+    #prefix: classpath:/templates/layuicms/
+    prefix: classpath:/templates/page/
+    suffix: .html
+    encoding: UTF-8
+    content-type: text/html
+  #mvc:
+  # view:
+  #   prefix: /WEB-INF/jsp/
+  #   suffix: .jsp
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf8
+    url: jdbc:mysql://127.0.0.1:3306/test?characterEncoding=utf-8
     username: root
     password: root
-    #\u6700\u5927\u6D3B\u8DC3\u6570
     maxActive: 20
-    #\u521D\u59CB\u5316\u6570\u91CF
     initialSize: 1
-    #\u6700\u5927\u8FDE\u63A5\u7B49\u5F85\u8D85\u65F6\u65F6\u95F4
     maxWait: 60000
-    #\u6253\u5F00PSCache\uFF0C\u5E76\u4E14\u6307\u5B9A\u6BCF\u4E2A\u8FDE\u63A5PSCache\u7684\u5927\u5C0F
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
-    #\u901A\u8FC7connectionProperties\u5C5E\u6027\u6765\u6253\u5F00mergeSql\u529F\u80FD\uFF1B\u6162SQL\u8BB0\u5F55
-    #connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     minIdle: 1
     timeBetweenEvictionRunsMillis: 60000
     minEvictableIdleTimeMillis: 300000
@@ -27,7 +28,6 @@ spring:
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
-    #\u914D\u7F6E\u76D1\u63A7\u7EDF\u8BA1\u62E6\u622A\u7684filters\uFF0C\u53BB\u6389\u540E\u76D1\u63A7\u754C\u9762sql\u5C06\u65E0\u6CD5\u7EDF\u8BA1,'wall'\u7528\u4E8E\u9632\u706B\u5899
     filters: stat, wall, log4j
   jpa:
     properties:
@@ -38,7 +38,7 @@ spring:
     multipart:
       max-request-size: 2048Mb
       max-file-size: 1024Mb
-  #\u914D\u7F6Eredis\u6570\u636E\u5E93\u8FDE\u63A5
+  #缓存接口
   redis:
     host: 127.0.0.1
     port: 6379
@@ -47,8 +47,32 @@ spring:
       min-idle: 1
       max-active: 20
       max-wait: 60000
-    database: 0 #\u9ED8\u8BA4\u662F\u7D22\u5F15\u4E3A\u76840\u7684\u6570\u636E\u5E93
-  #\u65E5\u5FD7\u5173\u95ED
+    database: 0
+
+# 日志
+debug: true
 logging:
   level:
     com.xugb.controller: 'off'
+    root: debug
+
+
+# mybatis
+mybatis:
+  type-aliases-package: com.xugb.entity
+  mapper-locations: classpath:mapper/*.xml
+
+# pagehelper
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+  # Mapper
+mapper:
+  mapper: com.xugb.mapper.mapper
+  not-empty: false
+  identity: MYSQL
+
+
+

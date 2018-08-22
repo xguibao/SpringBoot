@@ -21,6 +21,6 @@ public class LoggerConfguration extends WebMvcConfigurerAdapter
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
        // registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/**");
-        registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/login/*");
+        //registry.addInterceptor(new LoggerInterceptor()).addPathPatterns("/login/*");
     }
 }

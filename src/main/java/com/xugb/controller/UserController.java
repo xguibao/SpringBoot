@@ -1,85 +1,90 @@
 package com.xugb.controller;
 
-import com.xugb.Entity.UserEntity;
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageInfo;
+import com.xugb.common.bean.Rest;
+import com.xugb.entity.TUser;
+import com.xugb.entity.UserEntity;
+import com.xugb.entity.ext.TablePage;
 import com.xugb.jpa.UserJPA;
+import com.xugb.service.IUserService;
+import com.xugb.utils.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@RestController
+@Controller
 @RequestMapping(value = "/user")
 public class UserController {
 
     @Autowired
     private UserJPA userJPA;
 
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    PageUtil pageUtil;
+
+
     @RequestMapping(value = "/list")
-    public List<UserEntity> list()
-    {
-        return userJPA.findAll();
+    @ResponseBody
+    public Rest getUserForPaging(@RequestParam(required = false) String username,
+                                 @RequestParam(value = "page", defaultValue = "1") Integer page,
+                                 @RequestParam(value = "limit", defaultValue = "10") Integer size) {
+        PageInfo pageInfo = userService.getUserForPaging(username, page, size);
+
+        return Rest.okCountData(pageInfo.getTotal(), pageInfo.getList());
+
+
     }
 
     @RequestMapping(value = "/add")
-    public String add()
-    {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName("测试");
-        userEntity.setAddress("测试地址");
-        userEntity.setAge(21);
-        userJPA.save(userEntity);
-        return "用户信息添加成功";
+    public String add() {
+
+        return "news/newsAdd";
+    }
+
+    @RequestMapping(value = "/save")
+    public String save(TUser tUser) {
+        userService.save(tUser);
+        return "redirect:/page/news/newsList";
+    }
+
+    @RequestMapping(value = "/edit")
+    public String edit(Integer id, Model model) {
+        TUser tUser =userService.getById(id);
+        model.addAttribute("tUser",tUser);
+        return "news/newsEdit";
+    }
+
+    @RequestMapping(value = "/update")
+    public String update(TUser tUser) {
+        userService.update(tUser);
+        return "news/newsList";
     }
 
     @RequestMapping(value = "/delete")
-    public String delete(Long userId)
-    {
-        userJPA.delete(userId);
-        return "用户信息删除成功";
+    @ResponseBody
+    public String delete(Integer id) {
+        userService.delete(id);
+        return "news/newsList";
     }
 
-    @RequestMapping(value = "/age")
-    public List<UserEntity> age(){
-        return userJPA.nativeQuery(20);
+
+
+
+    @RequestMapping(value = "/getById")
+    @ResponseBody
+    public TUser getById(int id) {
+       TUser tUser =userService.getById(id);
+        return tUser;
     }
-
-    /**
-     * 根据条件自定义编写删除SQL
-     * @return
-     */
-    @RequestMapping(value = "/deleteWhere")
-    public String deleteWhere()
-    {
-        userJPA.deleteQuery("xugb","1");
-        return "自定义SQL删除数据成功";
-    }
-
-    /**
-     * 分页查询测试
-     * @param page 传入页码，从1开始
-     * @return
-     */
-    @RequestMapping(value = "/cutpage")
-    public List<UserEntity> cutPage(int page)
-    {
-        UserEntity user = new UserEntity();
-        user.setSize(2);
-        user.setSord("desc");
-        user.setPage(page);
-
-        //获取排序对象
-        Sort.Direction sort_direction = Sort.Direction.ASC.toString().equalsIgnoreCase(user.getSord()) ? Sort.Direction.ASC : Sort.Direction.DESC;
-        //设置排序对象参数
-        Sort sort = new Sort(sort_direction, user.getSidx());
-        //创建分页对象
-        PageRequest pageRequest = new PageRequest(user.getPage() - 1,user.getSize(),sort);
-        //执行分页查询
-        return userJPA.findAll(pageRequest).getContent();
-    }
-
 
 }

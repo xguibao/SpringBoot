@@ -1,6 +1,6 @@
 package com.xugb.jpa;
 
-import com.xugb.Entity.RedisEntity;
+import com.xugb.entity.RedisEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

@@ -1,6 +1,6 @@
 package com.xugb.core;
 
-import com.xugb.Entity.MailEntity;
+import com.xugb.entity.MailEntity;
 import com.xugb.enums.MailContentTypeEnum;
 import com.xugb.utils.PropertiesUtil;
 

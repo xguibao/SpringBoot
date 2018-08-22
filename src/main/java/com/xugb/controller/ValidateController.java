@@ -1,6 +1,6 @@
 package com.xugb.controller;
 
-import com.xugb.Entity.ValidateEntity;
+import com.xugb.entity.ValidateEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;

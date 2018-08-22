@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 引入 application.properties -->
+    <properties resource="application.yml"/>
+
+    <!-- MyBatis3Simple：不生成 Example相关类及方法 -->
+    <context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!-- 指定生成 Mapper 的继承模板 -->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!--这里修改成统一的Mapper父接口-->
+            <property name="mappers" value="com.xugb.mapper.util.MyMapper"/>
+        </plugin>
+
+        <!--这里填写自己的数据库链接-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/test?characterEncoding=utf8"
+                        userId="root"
+                        password="root">
+        </jdbcConnection>
+
+        <!--这里填写生成的表实体类目录-->
+        <javaModelGenerator targetPackage="com.xugb.entity" targetProject="src/main/java"/>
+
+        <!--这里填写生成的表xml目录-->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+
+        <!--这里填写生成的表mapper目录-->
+        <javaClientGenerator targetPackage="com.xugb.mapper.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER"/>
+
+        <!--这里的%通配符表示库里面的所有表-->  <!-- tableName：数据库表名，domainObjectName：生成文件名 ，schema：数据源-->
+        <table tableName="sys_user">
+            <!--mysql 配置-->
+            <generatedKey column="id" sqlStatement="Mysql" identity="true"/>
+            <!--oracle 配置-->
+            <!--<generatedKey column="id" sqlStatement="select SEQ_{1}.nextval from dual" identity="false" type="pre"/>-->
+        </table>
+    </context>
+</generatorConfiguration>

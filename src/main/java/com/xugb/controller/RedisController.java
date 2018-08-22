@@ -1,6 +1,6 @@
 package com.xugb.controller;
 
-import com.xugb.Entity.RedisEntity;
+import com.xugb.entity.RedisEntity;
 import com.xugb.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -2,7 +2,7 @@ package com.xugb.interceptor;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.xugb.Entity.LoggerEntity;
+import com.xugb.entity.LoggerEntity;
 import com.xugb.jpa.LoggerJPA;
 import com.xugb.utils.LoggerUtils;
 import org.springframework.beans.factory.BeanFactory;
